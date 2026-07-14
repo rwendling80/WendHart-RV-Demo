@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { siteConfig } from "@/lib/siteConfig";
+import { getCurrentDealer, dealerPhoneHref } from "@/lib/dealer";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -7,13 +7,15 @@ const navLinks = [
   { href: "/about", label: "Buying Guide" },
 ];
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const dealer = await getCurrentDealer();
+
   return (
     <header className="bg-charcoal text-cream">
       <div className="mx-auto max-w-6xl px-4 py-3 flex flex-wrap items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-xl font-bold tracking-tight">
-            {siteConfig.name}
+            {dealer.name}
           </span>
           <span className="rounded bg-forest-light px-2 py-0.5 text-xs font-bold uppercase tracking-wider">
             Demo
@@ -33,10 +35,10 @@ export function SiteHeader() {
         </nav>
 
         <a
-          href={siteConfig.phoneHref}
+          href={dealerPhoneHref(dealer.phone)}
           className="rounded-md bg-forest px-4 py-2 text-base font-bold hover:bg-forest-light"
         >
-          Call {siteConfig.phone}
+          Call {dealer.phone}
         </a>
       </div>
     </header>

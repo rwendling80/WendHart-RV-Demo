@@ -3,17 +3,20 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { getCurrentDealer } from "@/lib/dealer";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "WendHart Demo RV",
-  description:
-    "WendHart Demo RV — a demonstration used-RV dealership website.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const dealer = await getCurrentDealer();
+  return {
+    title: dealer.name,
+    description: `${dealer.name} — a demonstration used-RV dealership website.`,
+  };
+}
 
 export default function RootLayout({
   children,

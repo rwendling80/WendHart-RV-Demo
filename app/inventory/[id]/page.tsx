@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { fetchUnitById, formatPrice, isVisible } from "@/lib/units";
 import { SpecTable } from "@/components/SpecTable";
 import { InquiryForm } from "@/components/InquiryForm";
+import { getCurrentDealerId } from "@/lib/dealer";
 
 export default async function UnitDetailPage({
   params,
@@ -13,7 +14,8 @@ export default async function UnitDetailPage({
 }) {
   const { id } = await params;
   const { inquiry } = await searchParams;
-  const unit = await fetchUnitById(id);
+  const dealerId = await getCurrentDealerId();
+  const unit = await fetchUnitById(dealerId, id);
 
   if (!unit || !isVisible(unit)) notFound();
 

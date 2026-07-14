@@ -1,6 +1,7 @@
 import { fetchVisibleUnits } from "@/lib/units";
 import { UnitCard } from "@/components/UnitCard";
 import { InventoryFilterForm } from "@/components/InventoryFilterForm";
+import { getCurrentDealerId } from "@/lib/dealer";
 
 export default async function InventoryPage({
   searchParams,
@@ -13,8 +14,9 @@ export default async function InventoryPage({
   }>;
 }) {
   const params = await searchParams;
+  const dealerId = await getCurrentDealerId();
 
-  const units = await fetchVisibleUnits({
+  const units = await fetchVisibleUnits(dealerId, {
     minPrice: params.minPrice ? Number(params.minPrice) : undefined,
     maxPrice: params.maxPrice ? Number(params.maxPrice) : undefined,
     rvType: params.type || undefined,

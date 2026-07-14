@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { formatPrice, primaryPhoto, type Unit } from "@/lib/units";
+import { getCurrentDealerId } from "@/lib/dealer";
 import { markSold, markAvailable, deleteUnit } from "./actions";
 
 export default async function AdminUnitsPage() {
+  const dealerId = await getCurrentDealerId();
   const { data, error } = await supabaseAdmin
     .from("units")
     .select("*, unit_photos(*)")
+    .eq("dealer_id", dealerId)
     .order("created_at", { ascending: false });
 
   if (error) throw error;

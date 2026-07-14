@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { supabasePublic } from "@/lib/supabase/client";
+import { getCurrentDealerId } from "@/lib/dealer";
 
 export async function submitInquiry(unitId: string, formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
@@ -12,7 +13,10 @@ export async function submitInquiry(unitId: string, formData: FormData) {
     redirect(`/inventory/${unitId}?inquiry=error`);
   }
 
+  const dealerId = await getCurrentDealerId();
+
   const { error } = await supabasePublic.from("leads").insert({
+    dealer_id: dealerId,
     unit_id: unitId,
     name,
     phone,

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { categorySpecFields } from "@/lib/categorySpecs";
+import { getCurrentDealerId } from "@/lib/dealer";
 
 function buildSpecsFromForm(category: string, formData: FormData) {
   const fields = categorySpecFields[category] ?? [];
@@ -22,7 +23,11 @@ function buildSpecsFromForm(category: string, formData: FormData) {
   return specs;
 }
 
-async function uploadPhotos(unitId: string, formData: FormData) {
+async function uploadPhotos(
+  dealerId: string,
+  unitId: string,
+  formData: FormData
+) {
   const files = formData.getAll("photos").filter(
     (f): f is File => f instanceof File && f.size > 0
   );
@@ -30,13 +35,14 @@ async function uploadPhotos(unitId: string, formData: FormData) {
   const { data: existing } = await supabaseAdmin
     .from("unit_photos")
     .select("id")
-    .eq("unit_id", unitId);
+    .eq("unit_id", unitId)
+    .eq("dealer_id", dealerId);
   const nextSortStart = existing?.length ?? 0;
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
     const ext = file.name.split(".").pop() || "jpg";
-    const path = `${unitId}/${randomUUID()}.${ext}`;
+    const path = `${dealerId}/${unitId}/${randomUUID()}.${ext}`;
 
     const { error: uploadError } = await supabaseAdmin.storage
       .from("unit-photos")
@@ -49,6 +55,7 @@ async function uploadPhotos(unitId: string, formData: FormData) {
     } = supabaseAdmin.storage.from("unit-photos").getPublicUrl(path);
 
     await supabaseAdmin.from("unit_photos").insert({
+      dealer_id: dealerId,
       unit_id: unitId,
       url: publicUrl,
       sort_order: nextSortStart + i,
@@ -58,6 +65,7 @@ async function uploadPhotos(unitId: string, formData: FormData) {
 }
 
 export async function createUnit(formData: FormData) {
+  const dealerId = await getCurrentDealerId();
   const vin = String(formData.get("vin") || "").trim();
   const price = Number(formData.get("price") || 0);
   const photoFiles = formData
@@ -74,6 +82,7 @@ export async function createUnit(formData: FormData) {
   const { data, error } = await supabaseAdmin
     .from("units")
     .insert({
+      dealer_id: dealerId,
       category,
       rv_type: String(formData.get("rv_type") || "") || null,
       vin,
@@ -90,7 +99,7 @@ export async function createUnit(formData: FormData) {
 
   if (error) throw error;
 
-  await uploadPhotos(data.id, formData);
+  await uploadPhotos(dealerId, data.id, formData);
 
   revalidatePath("/admin/units");
   revalidatePath("/inventory");
@@ -98,6 +107,7 @@ export async function createUnit(formData: FormData) {
 }
 
 export async function updateUnit(unitId: string, formData: FormData) {
+  const dealerId = await getCurrentDealerId();
   const vin = String(formData.get("vin") || "").trim();
   const price = Number(formData.get("price") || 0);
 
@@ -122,11 +132,12 @@ export async function updateUnit(unitId: string, formData: FormData) {
       specs,
       updated_at: new Date().toISOString(),
     })
-    .eq("id", unitId);
+    .eq("id", unitId)
+    .eq("dealer_id", dealerId);
 
   if (error) throw error;
 
-  await uploadPhotos(unitId, formData);
+  await uploadPhotos(dealerId, unitId, formData);
 
   revalidatePath("/admin/units");
   revalidatePath(`/inventory/${unitId}`);
@@ -135,10 +146,12 @@ export async function updateUnit(unitId: string, formData: FormData) {
 }
 
 export async function markSold(unitId: string) {
+  const dealerId = await getCurrentDealerId();
   const { error } = await supabaseAdmin
     .from("units")
     .update({ status: "sold", sold_at: new Date().toISOString() })
-    .eq("id", unitId);
+    .eq("id", unitId)
+    .eq("dealer_id", dealerId);
 
   if (error) throw error;
 
@@ -147,10 +160,12 @@ export async function markSold(unitId: string) {
 }
 
 export async function markAvailable(unitId: string) {
+  const dealerId = await getCurrentDealerId();
   const { error } = await supabaseAdmin
     .from("units")
     .update({ status: "available", sold_at: null })
-    .eq("id", unitId);
+    .eq("id", unitId)
+    .eq("dealer_id", dealerId);
 
   if (error) throw error;
 
@@ -159,7 +174,12 @@ export async function markAvailable(unitId: string) {
 }
 
 export async function deleteUnit(unitId: string) {
-  const { error } = await supabaseAdmin.from("units").delete().eq("id", unitId);
+  const dealerId = await getCurrentDealerId();
+  const { error } = await supabaseAdmin
+    .from("units")
+    .delete()
+    .eq("id", unitId)
+    .eq("dealer_id", dealerId);
   if (error) throw error;
 
   revalidatePath("/admin/units");
@@ -167,10 +187,12 @@ export async function deleteUnit(unitId: string) {
 }
 
 export async function deletePhoto(photoId: string, unitId: string) {
+  const dealerId = await getCurrentDealerId();
   const { error } = await supabaseAdmin
     .from("unit_photos")
     .delete()
-    .eq("id", photoId);
+    .eq("id", photoId)
+    .eq("dealer_id", dealerId);
   if (error) throw error;
 
   revalidatePath(`/admin/units/${unitId}/edit`);

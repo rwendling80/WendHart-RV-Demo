@@ -1,13 +1,15 @@
 import Link from "next/link";
-import { siteConfig } from "@/lib/siteConfig";
+import { getCurrentDealer, dealerPhoneHref, dealerMapUrl } from "@/lib/dealer";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const dealer = await getCurrentDealer();
+
   return (
     <div>
       <section className="bg-forest text-cream">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
           <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight max-w-2xl">
-            {siteConfig.tagline}
+            {dealer.tagline}
           </h1>
           <p className="mt-4 text-lg max-w-xl text-cream/90">
             Family-run, no-pressure RV shopping. Come see what&apos;s on the
@@ -21,10 +23,10 @@ export default function HomePage() {
               See Our Inventory
             </Link>
             <a
-              href={siteConfig.phoneHref}
+              href={dealerPhoneHref(dealer.phone)}
               className="rounded-md border-2 border-cream px-6 py-3 text-lg font-bold hover:bg-forest-light"
             >
-              Call {siteConfig.phone}
+              Call {dealer.phone}
             </a>
           </div>
         </div>
@@ -55,8 +57,8 @@ export default function HomePage() {
             <h3 className="text-sm font-bold uppercase tracking-wider text-forest-light">
               Call Us
             </h3>
-            <a href={siteConfig.phoneHref} className="mt-1 block text-2xl font-bold underline">
-              {siteConfig.phone}
+            <a href={dealerPhoneHref(dealer.phone)} className="mt-1 block text-2xl font-bold underline">
+              {dealer.phone}
             </a>
           </div>
           <div>
@@ -64,12 +66,12 @@ export default function HomePage() {
               Visit the Lot
             </h3>
             <a
-              href={siteConfig.mapUrl}
+              href={dealerMapUrl(dealer.address)}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-1 block underline"
             >
-              {siteConfig.address}
+              {dealer.address}
             </a>
           </div>
           <div>
@@ -77,7 +79,7 @@ export default function HomePage() {
               Hours
             </h3>
             <ul className="mt-1 space-y-0.5">
-              {siteConfig.hours.map((h) => (
+              {dealer.hours.map((h) => (
                 <li key={h.days}>
                   {h.days}: {h.time}
                 </li>

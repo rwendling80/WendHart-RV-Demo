@@ -1,4 +1,5 @@
 import { supabaseAdmin } from "@/lib/supabase/server";
+import { getCurrentDealerId } from "@/lib/dealer";
 import { LeadStatusSelect } from "@/components/admin/LeadStatusSelect";
 
 type LeadRow = {
@@ -12,9 +13,11 @@ type LeadRow = {
 };
 
 export default async function AdminLeadsPage() {
+  const dealerId = await getCurrentDealerId();
   const { data, error } = await supabaseAdmin
     .from("leads")
     .select("*, units(year, make, model)")
+    .eq("dealer_id", dealerId)
     .order("created_at", { ascending: false });
 
   if (error) throw error;

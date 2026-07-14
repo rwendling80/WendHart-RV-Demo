@@ -1,4 +1,5 @@
 import { login } from "./actions";
+import { getCurrentDealer } from "@/lib/dealer";
 
 export default async function AdminLoginPage({
   searchParams,
@@ -6,9 +7,13 @@ export default async function AdminLoginPage({
   searchParams: Promise<{ error?: string }>;
 }) {
   const { error } = await searchParams;
+  const dealer = await getCurrentDealer();
 
   return (
     <div className="mx-auto max-w-sm px-4 py-16">
+      <p className="text-sm font-semibold uppercase tracking-wider text-charcoal-light mb-1">
+        {dealer.name}
+      </p>
       <h1 className="text-3xl font-extrabold text-forest-dark mb-6">
         Admin Login
       </h1>

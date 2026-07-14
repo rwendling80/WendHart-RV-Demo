@@ -62,11 +62,13 @@ export function formatPrice(cents: number): string {
 }
 
 export async function fetchVisibleUnits(
+  dealerId: string,
   filters: InventoryFilters = {}
 ): Promise<Unit[]> {
   const { data, error } = await supabasePublic
     .from("units")
     .select("*, unit_photos(*)")
+    .eq("dealer_id", dealerId)
     .order("created_at", { ascending: false });
 
   if (error) throw error;
@@ -86,10 +88,14 @@ export async function fetchVisibleUnits(
   });
 }
 
-export async function fetchUnitById(id: string): Promise<Unit | null> {
+export async function fetchUnitById(
+  dealerId: string,
+  id: string
+): Promise<Unit | null> {
   const { data, error } = await supabasePublic
     .from("units")
     .select("*, unit_photos(*)")
+    .eq("dealer_id", dealerId)
     .eq("id", id)
     .maybeSingle();
 

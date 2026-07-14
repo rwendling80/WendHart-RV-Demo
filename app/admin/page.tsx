@@ -1,13 +1,21 @@
 import Link from "next/link";
 import { logout } from "./login/actions";
+import { getCurrentDealer } from "@/lib/dealer";
 
-export default function AdminDashboardPage() {
+export default async function AdminDashboardPage() {
+  const dealer = await getCurrentDealer();
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-extrabold text-forest-dark">
-          Admin Dashboard
-        </h1>
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-wider text-charcoal-light">
+            {dealer.name}
+          </p>
+          <h1 className="text-3xl font-extrabold text-forest-dark">
+            Admin Dashboard
+          </h1>
+        </div>
         <form action={logout}>
           <button
             type="submit"

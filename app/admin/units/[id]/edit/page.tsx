@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import type { Unit } from "@/lib/units";
+import { getCurrentDealerId } from "@/lib/dealer";
 import { UnitForm } from "@/components/admin/UnitForm";
 import { updateUnit } from "../../actions";
 
@@ -18,11 +19,13 @@ export default async function EditUnitPage({
 }) {
   const { id } = await params;
   const { error: errorParam } = await searchParams;
+  const dealerId = await getCurrentDealerId();
 
   const { data, error } = await supabaseAdmin
     .from("units")
     .select("*, unit_photos(*)")
     .eq("id", id)
+    .eq("dealer_id", dealerId)
     .maybeSingle();
 
   if (error) throw error;
