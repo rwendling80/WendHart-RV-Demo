@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { getCurrentDealer, dealerPhoneHref, dealerMapUrl } from "@/lib/dealer";
 
@@ -33,8 +34,14 @@ export default async function HomePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-14 grid gap-10 sm:grid-cols-2 items-center">
-        <div className="flex aspect-video items-center justify-center rounded-lg bg-charcoal-light/10 border-2 border-dashed border-charcoal-light/40 text-charcoal-light">
-          Photo of the lot goes here
+        <div className="relative aspect-video rounded-lg overflow-hidden bg-charcoal-light/10">
+          <Image
+            src="https://images.pexels.com/photos/17816414/pexels-photo-17816414.jpeg?auto=compress&cs=tinysrgb&w=1200"
+            alt="RVs parked together on the lot"
+            fill
+            sizes="(max-width: 640px) 100vw, 50vw"
+            className="object-cover"
+          />
         </div>
         <div>
           <h2 className="text-3xl font-bold text-forest-dark">
@@ -85,6 +92,27 @@ export default async function HomePage() {
                 </li>
               ))}
             </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-cream">
+        <div className="mx-auto max-w-6xl px-4 py-10">
+          <div className="rounded-lg border-2 border-dashed border-forest bg-forest/5 p-6 sm:p-8 text-center">
+            <p className="text-sm font-bold uppercase tracking-wider text-forest-dark mb-2">
+              This Whole Site Is a Demo
+            </p>
+            <p className="text-lg max-w-2xl mx-auto mb-4">
+              A dealer enters the VIN, the photos, and the price. The system
+              does the rest — the website, the listings, the descriptions,
+              all of it.
+            </p>
+            <Link
+              href="/for-dealers"
+              className="inline-block rounded-md bg-forest px-6 py-3 text-lg font-bold text-cream hover:bg-forest-dark"
+            >
+              Want This For Your Lot?
+            </Link>
           </div>
         </div>
       </section>

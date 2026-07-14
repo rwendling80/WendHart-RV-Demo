@@ -13,14 +13,17 @@ export async function SiteHeader() {
   return (
     <header className="bg-charcoal text-cream">
       <div className="mx-auto max-w-6xl px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold tracking-tight">
+        <div className="flex items-center gap-2">
+          <Link href="/" className="text-xl font-bold tracking-tight">
             {dealer.name}
-          </span>
-          <span className="rounded bg-forest-light px-2 py-0.5 text-xs font-bold uppercase tracking-wider">
-            Demo
-          </span>
-        </Link>
+          </Link>
+          <Link
+            href="/for-dealers"
+            className="rounded bg-forest-light px-2 py-0.5 text-xs font-bold uppercase tracking-wider hover:bg-white hover:text-forest-dark"
+          >
+            Demo — Want This?
+          </Link>
+        </div>
 
         <nav className="flex items-center gap-5 text-base font-medium">
           {navLinks.map((link) => (

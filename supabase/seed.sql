@@ -32,7 +32,7 @@ values
     '1F65F5DY0CFA00003', 'rv', 'motorhome', 2012, 'Fleetwood', 'Bounder 36H',
     4200000, 'available',
     'Class A motorhome, Ford V10 chassis. Runs and drives great, generator serviced last month. Some fading on exterior decals, interior upholstery shows normal wear.',
-    '{"length_ft": 36, "weight_lbs": 22000, "sleeps": 8, "slides": 2, "generator": true, "fresh_tank_gal": 80, "gray_tank_gal": 60, "black_tank_gal": 40}'
+    '{"length_ft": 36, "weight_lbs": 22000, "sleeps": 8, "slides": 2, "generator": true, "fresh_tank_gal": 80, "gray_tank_gal": 60, "black_tank_gal": 40, "mileage": 62400}'
   ),
   (
     '4X4TWDB29KA000004', 'rv', 'toy_hauler', 2019, 'Forest River', 'Cherokee Wolf Pack 25',
@@ -50,7 +50,7 @@ values
     '1FDFE4FS8ME000006', 'rv', 'motorhome', 2021, 'Thor Motor Coach', 'Four Winds 31E',
     5400000, 'available',
     'Newest unit on the lot, still under factory structural warranty. Barely used — garage kept, less than 9,000 miles. Like-new condition throughout.',
-    '{"length_ft": 33, "weight_lbs": 14500, "sleeps": 7, "slides": 1, "generator": true, "fresh_tank_gal": 43, "gray_tank_gal": 39, "black_tank_gal": 39}'
+    '{"length_ft": 33, "weight_lbs": 14500, "sleeps": 7, "slides": 1, "generator": true, "fresh_tank_gal": 43, "gray_tank_gal": 39, "black_tank_gal": 39, "mileage": 8400}'
   );
 
 insert into unit_photos (unit_id, url, sort_order, is_primary)
@@ -63,6 +63,14 @@ join (values
   ('4YDF3CH28GJ400002', 'https://images.pexels.com/photos/16763335/pexels-photo-16763335.jpeg?auto=compress&cs=tinysrgb&w=1200', 1, false),
   ('1F65F5DY0CFA00003', 'https://images.pexels.com/photos/2962089/pexels-photo-2962089.jpeg?auto=compress&cs=tinysrgb&w=1200', 0, true),
   ('1F65F5DY0CFA00003', 'https://images.pexels.com/photos/3560366/pexels-photo-3560366.jpeg?auto=compress&cs=tinysrgb&w=1200', 1, false),
+  ('1F65F5DY0CFA00003', 'https://images.pexels.com/photos/7163683/pexels-photo-7163683.jpeg?auto=compress&cs=tinysrgb&w=1200', 2, false),
+  ('1F65F5DY0CFA00003', 'https://images.pexels.com/photos/33816355/pexels-photo-33816355.jpeg?auto=compress&cs=tinysrgb&w=1200', 3, false),
+  ('1F65F5DY0CFA00003', 'https://images.pexels.com/photos/33816353/pexels-photo-33816353.jpeg?auto=compress&cs=tinysrgb&w=1200', 4, false),
+  ('1F65F5DY0CFA00003', 'https://images.pexels.com/photos/18029603/pexels-photo-18029603.jpeg?auto=compress&cs=tinysrgb&w=1200', 5, false),
+  ('1F65F5DY0CFA00003', 'https://images.pexels.com/photos/18797772/pexels-photo-18797772.jpeg?auto=compress&cs=tinysrgb&w=1200', 6, false),
+  ('1F65F5DY0CFA00003', 'https://images.pexels.com/photos/13601011/pexels-photo-13601011.jpeg?auto=compress&cs=tinysrgb&w=1200', 7, false),
+  ('1F65F5DY0CFA00003', 'https://images.pexels.com/photos/13388410/pexels-photo-13388410.jpeg?auto=compress&cs=tinysrgb&w=1200', 8, false),
+  ('1F65F5DY0CFA00003', 'https://images.pexels.com/photos/6946075/pexels-photo-6946075.jpeg?auto=compress&cs=tinysrgb&w=1200', 9, false),
   ('4X4TWDB29KA000004', 'https://images.pexels.com/photos/38021445/pexels-photo-38021445.jpeg?auto=compress&cs=tinysrgb&w=1200', 0, true),
   ('4X4TWDB29KA000004', 'https://images.pexels.com/photos/7967365/pexels-photo-7967365.jpeg?auto=compress&cs=tinysrgb&w=1200', 1, false),
   ('1UJBJ02R0X1400005', 'https://images.pexels.com/photos/34613381/pexels-photo-34613381.jpeg?auto=compress&cs=tinysrgb&w=1200', 0, true),

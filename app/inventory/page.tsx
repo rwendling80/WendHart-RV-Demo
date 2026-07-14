@@ -11,6 +11,8 @@ export default async function InventoryPage({
     maxPrice?: string;
     type?: string;
     minSleeps?: string;
+    minYear?: string;
+    maxYear?: string;
   }>;
 }) {
   const params = await searchParams;
@@ -21,6 +23,8 @@ export default async function InventoryPage({
     maxPrice: params.maxPrice ? Number(params.maxPrice) : undefined,
     rvType: params.type || undefined,
     minSleeps: params.minSleeps ? Number(params.minSleeps) : undefined,
+    minYear: params.minYear ? Number(params.minYear) : undefined,
+    maxYear: params.maxYear ? Number(params.maxYear) : undefined,
   });
 
   return (

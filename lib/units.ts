@@ -30,6 +30,8 @@ export type InventoryFilters = {
   maxPrice?: number;
   rvType?: string;
   minSleeps?: number;
+  minYear?: number;
+  maxYear?: number;
 };
 
 const SOLD_BANNER_DAYS = 7;
@@ -80,6 +82,10 @@ export async function fetchVisibleUnits(
     if (filters.maxPrice != null && unit.price_cents > filters.maxPrice * 100)
       return false;
     if (filters.rvType && unit.rv_type !== filters.rvType) return false;
+    if (filters.minYear != null && (unit.year ?? 0) < filters.minYear)
+      return false;
+    if (filters.maxYear != null && (unit.year ?? 0) > filters.maxYear)
+      return false;
     if (filters.minSleeps != null) {
       const sleeps = Number(unit.specs?.sleeps ?? 0);
       if (sleeps < filters.minSleeps) return false;

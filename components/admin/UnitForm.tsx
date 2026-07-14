@@ -19,6 +19,7 @@ export function UnitForm({
     "idle" | "loading" | "done" | "error"
   >("idle");
 
+  const formRef = useRef<HTMLFormElement>(null);
   const vinRef = useRef<HTMLInputElement>(null);
   const typeRef = useRef<HTMLSelectElement>(null);
   const yearRef = useRef<HTMLInputElement>(null);
@@ -54,19 +55,43 @@ export function UnitForm({
       (o) => o.value === typeRef.current?.value
     )?.label;
 
-    const parts = [
-      [year, make, model].filter(Boolean).join(" ") || "This unit",
-      typeLabel ? `is a ${typeLabel.toLowerCase()}` : null,
-      "ready for its next trip. Contact us for the full details and to schedule a time to see it in person.",
-    ].filter(Boolean);
+    const specValue = (key: string) =>
+      formRef.current?.querySelector<HTMLInputElement>(`[name="spec_${key}"]`)
+        ?.value;
+    const sleeps = specValue("sleeps");
+    const length = specValue("length_ft");
+    const mileage = specValue("mileage");
+    const hasGenerator = formRef.current?.querySelector<HTMLInputElement>(
+      '[name="spec_generator"]'
+    )?.checked;
+
+    const namePart = [year, make, model].filter(Boolean).join(" ") || "This unit";
+    let sentence = `This ${namePart}`;
+
+    if (sleeps && length) {
+      sentence += ` sleeps ${sleeps} across ${length} feet`;
+    } else if (sleeps) {
+      sentence += ` sleeps ${sleeps}`;
+    } else if (length) {
+      sentence += ` spans ${length} feet`;
+    } else if (typeLabel) {
+      sentence += ` is a ${typeLabel.toLowerCase()}`;
+    }
+
+    if (hasGenerator) sentence += " and comes with an onboard generator";
+    if (mileage)
+      sentence += `, showing ${Number(mileage).toLocaleString("en-US")} miles`;
+
+    sentence +=
+      ". Contact us for the full details and to schedule a time to see it in person.";
 
     if (descriptionRef.current) {
-      descriptionRef.current.value = parts.join(" ");
+      descriptionRef.current.value = sentence;
     }
   }
 
   return (
-    <form action={action} className="space-y-6 max-w-2xl">
+    <form ref={formRef} action={action} className="space-y-6 max-w-2xl">
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="flex flex-col gap-1 text-sm font-semibold sm:col-span-2">
           VIN

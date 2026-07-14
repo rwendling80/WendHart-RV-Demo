@@ -78,6 +78,10 @@ export default async function UnitDetailPage({
             {formatPrice(unit.price_cents)}
           </p>
 
+          {unit.description && (
+            <p className="mt-4 text-lg leading-relaxed">{unit.description}</p>
+          )}
+
           {unit.condition_notes && (
             <div className="mt-6">
               <h2 className="text-xl font-bold text-charcoal mb-2">
@@ -93,7 +97,11 @@ export default async function UnitDetailPage({
             <h2 className="text-xl font-bold text-charcoal mb-2">
               Specifications
             </h2>
-            <SpecTable category={unit.category} specs={unit.specs} />
+            <SpecTable
+              category={unit.category}
+              rvType={unit.rv_type}
+              specs={unit.specs}
+            />
           </div>
         </div>
       </div>
