@@ -33,6 +33,16 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="bg-charcoal text-cream">
+        <div className="mx-auto max-w-4xl px-4 py-8 text-center">
+          <p className="text-xl sm:text-2xl font-bold leading-snug">
+            WendHart exists to give independent dealers their time back, with
+            an AI salesperson that works 24/7 to bring in more leads and
+            close more deals.
+          </p>
+        </div>
+      </section>
+
       <section className="mx-auto max-w-6xl px-4 py-14 grid gap-10 sm:grid-cols-2 items-center">
         <div className="relative aspect-video rounded-lg overflow-hidden bg-charcoal-light/10">
           <Image
@@ -45,15 +55,18 @@ export default async function HomePage() {
         </div>
         <div>
           <h2 className="text-3xl font-bold text-forest-dark">
-            6 Years. Word of Mouth. That&apos;s It.
+            This Is a Demo. Yours Would Look Even Better.
           </h2>
           <p className="mt-4 text-lg leading-relaxed">
-            We&apos;ve never run a big ad campaign. For six years, folks
-            have found us because a neighbor, a coworker, or a friend from
-            the campground told them to. We look over every unit that comes
-            onto the lot, we tell you what&apos;s wrong with it as plainly as
-            what&apos;s right, and we stand behind what we sell. That&apos;s
-            the whole business model.
+            Everything you see on this site is a working demonstration of
+            what we build for independent dealers. Your version comes with
+            your name, your branding, your photos, and your inventory. And
+            it comes with something no other dealer website has: a real AI
+            salesperson, not a fact bot. It knows every unit on your lot,
+            answers buyers the way you would, handles the common questions
+            and objections, and books appointments while you&apos;re busy
+            running your business. You upload the photos, the VIN, and your
+            price. The system does everything else.
           </p>
         </div>
       </section>
@@ -100,49 +113,30 @@ export default async function HomePage() {
         <div className="mx-auto max-w-4xl px-4 py-14">
           <div className="rounded-lg border-2 border-dashed border-forest bg-forest/5 p-6 sm:p-10">
             <p className="text-sm font-bold uppercase tracking-wider text-forest-dark mb-2 text-center">
-              This Whole Site Is a Demo
+              Meet the Founder
             </p>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-forest-dark text-center mb-6">
               Want This For Your Lot?
             </h2>
 
-            <div className="space-y-4 text-lg leading-relaxed">
-              <p>
-                This entire website is a demo. Everything you see here — the
-                inventory, the listings, the photos, the descriptions — runs
-                on a system where the dealer enters three things: the VIN,
-                the photos, and the price. The system does the rest.
+            <div className="rounded-lg bg-white p-5 text-lg leading-relaxed">
+              <h3 className="text-lg font-bold text-charcoal mb-2">
+                About Me
+              </h3>
+              <p className="mb-3">
+                My name is Reid Wendling. I started in the car business in
+                2019 selling Toyotas, moved to Hyundai about a year and a
+                half later and sold new cars for three and a half years,
+                then spent two years selling RVs. After that I worked as a
+                warranty agent with independent car and RV dealerships
+                across the Gulf Coast, and that is where I saw the same
+                problem on every lot I walked.
               </p>
-
-              <div className="rounded-lg bg-white p-5">
-                <h3 className="text-lg font-bold text-charcoal mb-2">
-                  About Me
-                </h3>
-                <p className="mb-3">
-                  My name is Reid Wendling. I started in the car business in
-                  2019 selling Toyotas, moved to Hyundai about a year and a
-                  half later and sold new cars for three and a half years,
-                  then spent two years selling RVs. After that I worked as a
-                  warranty agent with independent car and RV dealerships
-                  across the Gulf Coast, and that is where I saw the same
-                  problem on every lot I walked.
-                </p>
-                <p>
-                  Owners do not have time for the background work. The
-                  listings, the website, the same twenty questions from every
-                  buyer, the follow up calls that never happen because you
-                  are busy getting deals done.
-                </p>
-              </div>
-
               <p>
-                <span className="font-bold">What WendHart is:</span> an AI
-                sales agent that does your background work. It builds your
-                website, keeps your inventory updated, writes your listings,
-                answers your buyers day and night with your answers and your
-                rules, books the appointments, and funnels every lead back to
-                you in one simple list. You buy units and shake hands. It
-                handles the rest.
+                Owners do not have time for the background work. The
+                listings, the website, the same twenty questions from every
+                buyer, the follow up calls that never happen because you
+                are busy getting deals done.
               </p>
             </div>
 
