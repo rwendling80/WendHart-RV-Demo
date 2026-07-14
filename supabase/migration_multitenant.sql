@@ -17,7 +17,7 @@ values (
   null,
   'WendHart Demo RV',
   'Quality Used RVs. Straight Talk. Fair Prices.',
-  '(555) 019-2837',
+  '(615) 480-6563',
   '3312 Nolensville Pike, Nashville, TN 37211',
   '[{"days":"Monday - Friday","time":"9:00 AM - 6:00 PM"},{"days":"Saturday","time":"9:00 AM - 4:00 PM"},{"days":"Sunday","time":"Closed"}]'::jsonb,
   'Hartwend-Lot-47'
