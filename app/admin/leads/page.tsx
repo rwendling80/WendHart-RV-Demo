@@ -8,6 +8,7 @@ type LeadRow = {
   phone: string;
   message: string | null;
   status: string;
+  source: string;
   created_at: string;
   units: { year: number | null; make: string | null; model: string | null } | null;
 };
@@ -45,6 +46,11 @@ export default async function AdminLeadsPage() {
                 <div>
                   <p className="font-bold text-charcoal">
                     {lead.name} · {lead.phone}
+                    {lead.source === "financing" && (
+                      <span className="ml-2 rounded bg-rust px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-white align-middle">
+                        Financing
+                      </span>
+                    )}
                   </p>
                   <p className="text-sm text-charcoal-light">
                     {new Date(lead.created_at).toLocaleString()} ·{" "}

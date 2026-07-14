@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { fetchUnitById, formatPrice, isVisible } from "@/lib/units";
 import { SpecTable } from "@/components/SpecTable";
@@ -77,6 +78,13 @@ export default async function UnitDetailPage({
           <p className="mt-2 text-3xl font-extrabold text-forest-dark">
             {formatPrice(unit.price_cents)}
           </p>
+
+          <Link
+            href={`/financing?unit=${unit.id}`}
+            className="mt-4 inline-block rounded-md bg-forest px-5 py-2.5 text-base font-bold text-cream hover:bg-forest-dark"
+          >
+            Apply for Financing on This Unit
+          </Link>
 
           {unit.description && (
             <p className="mt-4 text-lg leading-relaxed">{unit.description}</p>

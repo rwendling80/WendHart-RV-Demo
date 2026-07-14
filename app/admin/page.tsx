@@ -26,7 +26,7 @@ export default async function AdminDashboardPage() {
         </form>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <Link
           href="/admin/units"
           className="rounded-lg border-2 border-charcoal/10 bg-white p-6 hover:border-forest"
@@ -43,6 +43,17 @@ export default async function AdminDashboardPage() {
           <h2 className="text-xl font-bold text-charcoal">Lead Log</h2>
           <p className="mt-2 text-lg text-charcoal-light">
             See every inquiry and update its status.
+          </p>
+        </Link>
+        <Link
+          href="/admin/financing"
+          className="rounded-lg border-2 border-charcoal/10 bg-white p-6 hover:border-forest"
+        >
+          <h2 className="text-xl font-bold text-charcoal">
+            Financing Applications
+          </h2>
+          <p className="mt-2 text-lg text-charcoal-light">
+            Review credit applications and print for lender submission.
           </p>
         </Link>
       </div>

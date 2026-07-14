@@ -4,6 +4,7 @@ import { getCurrentDealer, dealerPhoneHref } from "@/lib/dealer";
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/inventory", label: "Inventory" },
+  { href: "/financing", label: "Apply for Financing" },
   { href: "/about", label: "Buying Guide" },
 ];
 

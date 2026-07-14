@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { fetchVisibleUnits } from "@/lib/units";
 import { UnitCard } from "@/components/UnitCard";
 import { InventoryFilterForm } from "@/components/InventoryFilterForm";
@@ -34,6 +35,18 @@ export default async function InventoryPage({
       </h1>
 
       <InventoryFilterForm searchParams={params} />
+
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-3 rounded-lg bg-forest/5 border-2 border-forest/20 px-5 py-4">
+        <p className="text-lg font-semibold text-forest-dark">
+          Found something you like? Get pre-approved before you visit.
+        </p>
+        <Link
+          href="/financing"
+          className="rounded-md bg-forest px-5 py-2.5 text-base font-bold text-cream hover:bg-forest-dark"
+        >
+          Apply for Financing
+        </Link>
+      </div>
 
       {units.length === 0 ? (
         <p className="text-lg text-charcoal-light">
