@@ -38,7 +38,18 @@ From **Admin → Inventory**, every unit has its own **Edit**, **Mark Sold** / *
 
 ### The Lead Log
 
-**Admin → Lead Log** shows every inquiry submitted from the site, newest first — name, phone, message, which unit (or "General inquiry" if not tied to one), and a status dropdown (New / Contacted / Came in / Bought / Dead). Changing the dropdown saves instantly, no save button needed. This page runs entirely passively — you never have to do anything for leads to show up here.
+**Admin → Lead Log** shows every inquiry submitted from the site, newest first — name, phone, message, which unit (or "General inquiry" if not tied to one), and a status dropdown (New / Contacted / Came in / Bought / Dead). Changing the dropdown saves instantly, no save button needed. This page runs entirely passively — you never have to do anything for leads to show up here. Financing applications show up here too, marked with a red **Financing** tag.
+
+### Financing Applications
+
+Buyers can apply for financing from the nav, from any unit page, or from the inventory page. **Admin → Financing Applications** lists every application with a status dropdown (New / Printed / Submitted to lender / Approved / Declined / Expired) and a **Print View** button — that's the page you actually print (or save as PDF) to send to a lender. It shows the full application cleanly formatted like a paper credit application.
+
+A few important things about how this handles sensitive data (Social Security Number, date of birth):
+- The SSN is **never shown in full** anywhere except that one Print View page — everywhere else (the applications list) shows only the last 4 digits.
+- Both the SSN and date of birth are **encrypted** in the database at all times — even someone looking directly at the database wouldn't see them in plain text.
+- Applications are **automatically and permanently deleted 30 days** after submission — this happens on its own, nothing to do.
+- None of this sensitive information is ever sent by email or any other notification.
+- Since the demo site is public, the financing form has a banner reminding anyone testing it to use fake details — but the security behavior above is real and always on, demo or not.
 
 ## How to make changes going forward
 
@@ -69,5 +80,4 @@ No code changes needed per new dealer — this is purely a data/configuration st
 
 - **AI chatbot** on the public site that answers questions from inventory data and captures leads the same way the inquiry form does.
 - **Auto-posting new units to Instagram, Facebook, and TikTok** — this is the most involved item on the list, since each platform needs its own developer setup and approval process.
-- **Financing application form** so buyers can submit for credit to be run.
-- All of the above are designed for, not yet built — the data model already has the seams needed for each.
+- Both are designed for, not yet built — the data model already has the seams needed for each.
