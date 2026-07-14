@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-charcoal: #23272a;
+  --color-charcoal-light: #3f454a;
+  --color-forest: #1f4d3d;
+  --color-forest-dark: #163a2d;
+  --color-forest-light: #2c6b4f;
+  --color-cream: #f7f5f0;
+  --color-rust: #b0472e;
+  --font-sans: var(--font-inter);
+}
+
+html {
+  font-size: 18px;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-charcoal);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
