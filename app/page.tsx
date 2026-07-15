@@ -9,25 +9,27 @@ export default async function HomePage() {
     <div>
       <section className="bg-forest text-cream">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
-          <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight max-w-2xl">
-            {dealer.tagline}
+          <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight max-w-3xl">
+            This Will Be Your Website. Your Name. Your Brand. Your Inventory.
           </h1>
-          <p className="mt-4 text-lg max-w-xl text-cream/90">
-            Family-run, no-pressure RV shopping. Come see what&apos;s on the
-            lot or give us a call — we&apos;re happy to talk it through.
+          <p className="mt-4 text-lg max-w-2xl text-cream/90">
+            Everything on this site is a live demo of what we build for
+            independent dealers — designed to fit your dealership, and run by
+            an AI salesperson that works around the clock. Look around, click
+            on units, try the chat. Then imagine it with your name on it.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
               href="/inventory"
               className="rounded-md bg-cream px-6 py-3 text-lg font-bold text-forest-dark hover:bg-white"
             >
-              See Our Inventory
+              See The Demo Inventory
             </Link>
             <a
               href={dealerPhoneHref(dealer.phone)}
               className="rounded-md border-2 border-cream px-6 py-3 text-lg font-bold hover:bg-forest-light"
             >
-              Call {dealer.phone}
+              Talk to Reid
             </a>
           </div>
         </div>

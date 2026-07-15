@@ -1,13 +1,13 @@
 import { notFound } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase/server";
-import type { Unit } from "@/lib/units";
+import type { AdminUnit } from "@/lib/units";
 import { getCurrentDealerId } from "@/lib/dealer";
 import { UnitForm } from "@/components/admin/UnitForm";
 import { updateUnit } from "../../actions";
 
 const errorMessages: Record<string, string> = {
   missing_vin: "VIN is required.",
-  missing_price: "Price is required.",
+  missing_price: "Asking price is required.",
 };
 
 export default async function EditUnitPage({
@@ -31,7 +31,7 @@ export default async function EditUnitPage({
   if (error) throw error;
   if (!data) notFound();
 
-  const unit = data as Unit;
+  const unit = data as AdminUnit;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">

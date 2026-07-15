@@ -19,7 +19,7 @@ export function LeadStatusSelect({
         name="status"
         defaultValue={status}
         onChange={(e) => e.currentTarget.form?.requestSubmit()}
-        className="rounded border-2 border-charcoal/20 px-2 py-1 text-sm font-semibold"
+        className="rounded border-2 border-charcoal/20 px-3 py-2.5 text-base font-semibold"
       >
         {STATUSES.map((s) => (
           <option key={s} value={s}>

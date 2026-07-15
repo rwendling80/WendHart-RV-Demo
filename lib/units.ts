@@ -7,6 +7,10 @@ export type UnitPhoto = {
   is_primary: boolean;
 };
 
+// Public-safe shape. Deliberately excludes floor_price_cents -- see
+// AdminUnit below and the column-level grants in
+// supabase/migration_floor_price.sql for why that's not just a type-level
+// convention.
 export type Unit = {
   id: string;
   category: string;
@@ -24,6 +28,17 @@ export type Unit = {
   created_at: string;
   unit_photos: UnitPhoto[];
 };
+
+// Admin-only shape (used with supabaseAdmin, never supabasePublic). Adds the
+// dealer's bottom-dollar floor price -- ADMIN-ONLY, chatbot-triage data for
+// Phase 2 (flag a hot offer to the dealer), never a quote/acceptance source,
+// and never rendered on any public page.
+export type AdminUnit = Unit & {
+  floor_price_cents: number | null;
+};
+
+const PUBLIC_UNIT_COLUMNS =
+  "id, dealer_id, category, rv_type, vin, year, make, model, price_cents, status, sold_at, condition_notes, description, specs, created_at, updated_at, unit_photos(*)";
 
 export type InventoryFilters = {
   minPrice?: number;
@@ -69,13 +84,13 @@ export async function fetchVisibleUnits(
 ): Promise<Unit[]> {
   const { data, error } = await supabasePublic
     .from("units")
-    .select("*, unit_photos(*)")
+    .select(PUBLIC_UNIT_COLUMNS)
     .eq("dealer_id", dealerId)
     .order("created_at", { ascending: false });
 
   if (error) throw error;
 
-  return (data as Unit[]).filter((unit) => {
+  return (data as unknown as Unit[]).filter((unit) => {
     if (!isVisible(unit)) return false;
     if (filters.minPrice != null && unit.price_cents < filters.minPrice * 100)
       return false;
@@ -100,11 +115,11 @@ export async function fetchUnitById(
 ): Promise<Unit | null> {
   const { data, error } = await supabasePublic
     .from("units")
-    .select("*, unit_photos(*)")
+    .select(PUBLIC_UNIT_COLUMNS)
     .eq("dealer_id", dealerId)
     .eq("id", id)
     .maybeSingle();
 
   if (error) throw error;
-  return data as Unit | null;
+  return data as unknown as Unit | null;
 }

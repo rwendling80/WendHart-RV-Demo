@@ -3,7 +3,8 @@ import { createUnit } from "../actions";
 
 const errorMessages: Record<string, string> = {
   missing_vin: "VIN is required.",
-  missing_price: "Price is required.",
+  missing_price: "Asking price is required.",
+  missing_floor_price: "Your bottom dollar is required.",
   missing_photo: "At least one photo is required.",
 };
 
@@ -20,7 +21,7 @@ export default async function NewUnitPage({
         Add Unit
       </h1>
       <p className="text-lg text-charcoal-light mb-6">
-        Just VIN, price, and at least one photo are required — everything
+        Just photos, VIN, asking price, and your bottom dollar — everything
         else is optional and can be filled in later.
       </p>
       {error && errorMessages[error] && (

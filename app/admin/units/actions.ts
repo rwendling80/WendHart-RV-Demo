@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { categorySpecFields } from "@/lib/categorySpecs";
 import { getCurrentDealerId } from "@/lib/dealer";
+import { generateDescription } from "@/lib/generateDescription";
 
 function buildSpecsFromForm(category: string, formData: FormData) {
   const fields = categorySpecFields[category] ?? [];
@@ -21,6 +22,22 @@ function buildSpecsFromForm(category: string, formData: FormData) {
     }
   }
   return specs;
+}
+
+function resolveDescription(formData: FormData, specs: Record<string, unknown>) {
+  const typed = String(formData.get("description") || "").trim();
+  if (typed) return typed;
+
+  return generateDescription({
+    year: formData.get("year") ? Number(formData.get("year")) : null,
+    make: String(formData.get("make") || "") || null,
+    model: String(formData.get("model") || "") || null,
+    rvType: String(formData.get("rv_type") || "") || null,
+    sleeps: specs.sleeps as number | undefined,
+    lengthFt: specs.length_ft as number | undefined,
+    mileage: specs.mileage as number | undefined,
+    hasGenerator: Boolean(specs.generator),
+  });
 }
 
 async function uploadPhotos(
@@ -68,16 +85,20 @@ export async function createUnit(formData: FormData) {
   const dealerId = await getCurrentDealerId();
   const vin = String(formData.get("vin") || "").trim();
   const price = Number(formData.get("price") || 0);
+  const floorPrice = formData.get("floor_price");
   const photoFiles = formData
     .getAll("photos")
     .filter((f): f is File => f instanceof File && f.size > 0);
 
   if (!vin) redirect("/admin/units/new?error=missing_vin");
   if (!price || price <= 0) redirect("/admin/units/new?error=missing_price");
+  if (!floorPrice || Number(floorPrice) <= 0)
+    redirect("/admin/units/new?error=missing_floor_price");
   if (photoFiles.length === 0) redirect("/admin/units/new?error=missing_photo");
 
   const category = "rv";
   const specs = buildSpecsFromForm(category, formData);
+  const description = resolveDescription(formData, specs);
 
   const { data, error } = await supabaseAdmin
     .from("units")
@@ -90,8 +111,13 @@ export async function createUnit(formData: FormData) {
       make: String(formData.get("make") || "") || null,
       model: String(formData.get("model") || "") || null,
       price_cents: Math.round(price * 100),
+      // Dealer's bottom-dollar. ADMIN-ONLY -- see the column comment and
+      // grants in supabase/migration_floor_price.sql. This is chatbot-triage
+      // data for Phase 2 (flag a hot offer), never a quote/acceptance source,
+      // and it must never be threaded into `description` or any public query.
+      floor_price_cents: Math.round(Number(floorPrice) * 100),
       condition_notes: String(formData.get("condition_notes") || "") || null,
-      description: String(formData.get("description") || "") || null,
+      description,
       specs,
     })
     .select("id")
@@ -110,6 +136,7 @@ export async function updateUnit(unitId: string, formData: FormData) {
   const dealerId = await getCurrentDealerId();
   const vin = String(formData.get("vin") || "").trim();
   const price = Number(formData.get("price") || 0);
+  const floorPrice = formData.get("floor_price");
 
   if (!vin) redirect(`/admin/units/${unitId}/edit?error=missing_vin`);
   if (!price || price <= 0)
@@ -117,6 +144,7 @@ export async function updateUnit(unitId: string, formData: FormData) {
 
   const category = "rv";
   const specs = buildSpecsFromForm(category, formData);
+  const description = resolveDescription(formData, specs);
 
   const { error } = await supabaseAdmin
     .from("units")
@@ -127,8 +155,12 @@ export async function updateUnit(unitId: string, formData: FormData) {
       make: String(formData.get("make") || "") || null,
       model: String(formData.get("model") || "") || null,
       price_cents: Math.round(price * 100),
+      floor_price_cents:
+        floorPrice && Number(floorPrice) > 0
+          ? Math.round(Number(floorPrice) * 100)
+          : null,
       condition_notes: String(formData.get("condition_notes") || "") || null,
-      description: String(formData.get("description") || "") || null,
+      description,
       specs,
       updated_at: new Date().toISOString(),
     })
