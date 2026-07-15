@@ -18,10 +18,10 @@ export function generateDescription(input: DescriptionInput): string {
     (o) => o.value === input.rvType
   )?.label;
 
-  const namePart =
-    [input.year, input.make, input.model].filter(Boolean).join(" ") ||
-    "This unit";
-  let sentence = `This ${namePart}`;
+  const namePart = [input.year, input.make, input.model]
+    .filter(Boolean)
+    .join(" ");
+  let sentence = namePart ? `This ${namePart}` : "This unit";
 
   if (input.sleeps && input.lengthFt) {
     sentence += ` sleeps ${input.sleeps} across ${input.lengthFt} feet`;
