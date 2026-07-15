@@ -120,18 +120,31 @@ export default async function HomePage() {
             </h2>
 
             <div className="rounded-lg bg-white p-5 text-lg leading-relaxed">
-              <h3 className="text-lg font-bold text-charcoal mb-2">
-                About Me
-              </h3>
-              <p className="mb-3">
-                My name is Reid Wendling. I started in the car business in
-                2019 selling Toyotas, moved to Hyundai about a year and a
-                half later and sold new cars for three and a half years,
-                then spent two years selling RVs. After that I worked as a
-                warranty agent with independent car and RV dealerships
-                across the Gulf Coast, and that is where I saw the same
-                problem on every lot I walked.
-              </p>
+              <div className="flex flex-col sm:flex-row gap-5 items-center sm:items-start mb-2">
+                <div className="relative h-32 w-32 flex-none rounded-full overflow-hidden border-4 border-forest/20">
+                  <Image
+                    src="/founder/reid-wendling.jpg"
+                    alt="Reid Wendling, founder of WendHart"
+                    fill
+                    sizes="128px"
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-charcoal">
+                    About Me
+                  </h3>
+                  <p className="mt-2">
+                    My name is Reid Wendling. I started in the car business in
+                    2019 selling Toyotas, moved to Hyundai about a year and a
+                    half later and sold new cars for three and a half years,
+                    then spent two years selling RVs. After that I worked as a
+                    warranty agent with independent car and RV dealerships
+                    across the Gulf Coast, and that is where I saw the same
+                    problem on every lot I walked.
+                  </p>
+                </div>
+              </div>
               <p>
                 Owners do not have time for the background work. The
                 listings, the website, the same twenty questions from every
