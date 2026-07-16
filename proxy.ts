@@ -5,11 +5,15 @@ import {
   ADMIN_SESSION_COOKIE,
   isValidAdminSessionValue,
 } from "@/lib/adminAuth";
-import { DEALER_ID_HEADER, DEALER_SLUG_HEADER } from "@/lib/dealer";
+import { DEALER_ID_HEADER, DEALER_SLUG_HEADER, PATHNAME_HEADER } from "@/lib/dealer";
 
+// Uses the secret key, not the public one: this reads admin_password on
+// every request to validate the admin session cookie, and that column is
+// no longer grant-visible to the anon/authenticated roles (see
+// supabase/migration_chatbot.sql).
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+  process.env.SUPABASE_SECRET_KEY!
 );
 
 async function resolveDealer(host: string) {
@@ -45,6 +49,7 @@ export async function proxy(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set(DEALER_ID_HEADER, dealer.id);
   requestHeaders.set(DEALER_SLUG_HEADER, dealer.slug);
+  requestHeaders.set(PATHNAME_HEADER, request.nextUrl.pathname);
 
   const response = NextResponse.next({ request: { headers: requestHeaders } });
 

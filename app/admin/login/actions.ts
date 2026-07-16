@@ -7,11 +7,18 @@ import {
   adminSessionCookieValue,
   checkAdminPassword,
 } from "@/lib/adminAuth";
-import { getCurrentDealer } from "@/lib/dealer";
+import { getCurrentDealerId } from "@/lib/dealer";
+import { supabaseAdmin } from "@/lib/supabase/server";
 
 export async function login(formData: FormData) {
   const password = String(formData.get("password") ?? "");
-  const dealer = await getCurrentDealer();
+  const dealerId = await getCurrentDealerId();
+  const { data: dealer, error } = await supabaseAdmin
+    .from("dealers")
+    .select("id, admin_password")
+    .eq("id", dealerId)
+    .single();
+  if (error) throw error;
 
   if (!checkAdminPassword(dealer.admin_password, password)) {
     redirect("/admin/login?error=1");

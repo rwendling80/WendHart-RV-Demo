@@ -7,19 +7,31 @@ import { maskSsn, type FinancingApplication } from "@/lib/financing";
 
 type LeadRow = {
   id: string;
-  name: string;
-  phone: string;
+  name: string | null;
+  phone: string | null;
   message: string | null;
   status: string;
   source: string;
+  intent_level: "HOT" | "WARM" | "BROWSE" | null;
   created_at: string;
   units: { year: number | null; make: string | null; model: string | null } | null;
+};
+
+type ChatTranscript = {
+  lead_id: string;
+  messages: { role: "user" | "assistant"; content: string }[];
+};
+
+const INTENT_BADGE_STYLES: Record<string, string> = {
+  HOT: "bg-rust text-white",
+  WARM: "bg-forest text-cream",
+  BROWSE: "bg-charcoal/10 text-charcoal-light",
 };
 
 export default async function AdminLeadsPage() {
   const dealerId = await getCurrentDealerId();
 
-  const [leadsResult, financingResult] = await Promise.all([
+  const [leadsResult, financingResult, chatResult] = await Promise.all([
     supabaseAdmin
       .from("leads")
       .select("*, units(year, make, model)")
@@ -30,13 +42,22 @@ export default async function AdminLeadsPage() {
       .select("*, units(year, make, model)")
       .eq("dealer_id", dealerId)
       .order("created_at", { ascending: false }),
+    supabaseAdmin
+      .from("chat_conversations")
+      .select("lead_id, messages")
+      .eq("dealer_id", dealerId)
+      .not("lead_id", "is", null),
   ]);
 
   if (leadsResult.error) throw leadsResult.error;
   if (financingResult.error) throw financingResult.error;
+  if (chatResult.error) throw chatResult.error;
 
   const leads = leadsResult.data as unknown as LeadRow[];
   const applications = financingResult.data as unknown as FinancingApplication[];
+  const transcriptsByLeadId = new Map(
+    (chatResult.data as unknown as ChatTranscript[]).map((c) => [c.lead_id, c.messages])
+  );
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
@@ -63,10 +84,23 @@ export default async function AdminLeadsPage() {
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <p className="text-lg font-bold text-charcoal">
-                    {lead.name} · {lead.phone}
+                    {lead.name || "Anonymous chat visitor"} ·{" "}
+                    {lead.phone || "no number yet"}
                     {lead.source === "financing" && (
                       <span className="ml-2 rounded bg-rust px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-white align-middle">
                         Financing
+                      </span>
+                    )}
+                    {lead.source === "chatbot" && (
+                      <span className="ml-2 rounded bg-charcoal px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-white align-middle">
+                        Chatbot
+                      </span>
+                    )}
+                    {lead.intent_level && (
+                      <span
+                        className={`ml-2 rounded px-2 py-0.5 text-xs font-bold uppercase tracking-wider align-middle ${INTENT_BADGE_STYLES[lead.intent_level]}`}
+                      >
+                        {lead.intent_level}
                       </span>
                     )}
                   </p>
@@ -78,6 +112,23 @@ export default async function AdminLeadsPage() {
                   </p>
                   {lead.message && (
                     <p className="mt-2 text-lg">{lead.message}</p>
+                  )}
+                  {transcriptsByLeadId.has(lead.id) && (
+                    <details className="mt-2">
+                      <summary className="cursor-pointer text-sm font-semibold text-forest">
+                        View chat transcript
+                      </summary>
+                      <div className="mt-2 space-y-1 rounded bg-charcoal/5 p-3 text-sm">
+                        {transcriptsByLeadId.get(lead.id)?.map((m, i) => (
+                          <p key={i}>
+                            <span className="font-bold">
+                              {m.role === "user" ? "Buyer: " : "Assistant: "}
+                            </span>
+                            {m.content}
+                          </p>
+                        ))}
+                      </div>
+                    </details>
                   )}
                 </div>
                 <LeadStatusSelect leadId={lead.id} status={lead.status} />

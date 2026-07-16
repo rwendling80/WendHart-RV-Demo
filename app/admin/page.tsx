@@ -45,14 +45,22 @@ export default async function AdminDashboardPage() {
             Admin Home
           </h1>
         </div>
-        <form action={logout}>
-          <button
-            type="submit"
+        <div className="flex items-center gap-3">
+          <Link
+            href="/admin/settings"
             className="rounded-md border-2 border-charcoal/20 px-4 py-2.5 text-base font-semibold hover:bg-charcoal/5"
           >
-            Log Out
-          </button>
-        </form>
+            Chatbot Settings
+          </Link>
+          <form action={logout}>
+            <button
+              type="submit"
+              className="rounded-md border-2 border-charcoal/20 px-4 py-2.5 text-base font-semibold hover:bg-charcoal/5"
+            >
+              Log Out
+            </button>
+          </form>
+        </div>
       </div>
 
       <div className="grid grid-cols-3 gap-3 mb-8">
