@@ -1,6 +1,17 @@
-const ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages";
+import Anthropic from "@anthropic-ai/sdk";
+
 const MODEL = process.env.ANTHROPIC_MODEL || "claude-sonnet-5";
 const LEAD_UPDATE_MARKER = "<<LEAD_UPDATE>>";
+
+let client: Anthropic | null = null;
+function getClient(): Anthropic {
+  if (!client) {
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) throw new Error("ANTHROPIC_API_KEY is not set.");
+    client = new Anthropic({ apiKey });
+  }
+  return client;
+}
 
 export type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -43,35 +54,16 @@ export async function callChatbot(
   systemPrompt: string,
   messages: ChatMessage[]
 ): Promise<ChatbotResult> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    throw new Error("ANTHROPIC_API_KEY is not set.");
-  }
-
-  const res = await fetch(ANTHROPIC_API_URL, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      max_tokens: 1024,
-      system: systemPrompt,
-      messages,
-    }),
+  const response = await getClient().messages.create({
+    model: MODEL,
+    max_tokens: 1024,
+    system: systemPrompt,
+    messages,
   });
 
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Anthropic API error ${res.status}: ${text}`);
-  }
-
-  const data = await res.json();
-  const rawText = (data.content ?? [])
-    .filter((block: { type: string }) => block.type === "text")
-    .map((block: { text: string }) => block.text)
+  const rawText = response.content
+    .filter((block) => block.type === "text")
+    .map((block) => block.text)
     .join("");
 
   return parseModelOutput(rawText);

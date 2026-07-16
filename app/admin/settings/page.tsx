@@ -144,6 +144,62 @@ export default async function AdminSettingsPage({
         </fieldset>
 
         <label className="flex flex-col gap-1 text-sm font-semibold">
+          Financing process
+          <span className="text-xs font-normal text-charcoal-light">
+            Answers "Do you offer financing? What's the process?"
+          </span>
+          <textarea
+            name="financing_process"
+            rows={2}
+            defaultValue={dealer.financing_process ?? ""}
+            placeholder="We don't run financing in-house — the online application routes to outside lenders, and we follow up with real numbers once it's submitted."
+            className="rounded border-2 border-charcoal/20 px-3 py-2.5 text-base font-normal"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1 text-sm font-semibold">
+          Out-of-state buyers
+          <span className="text-xs font-normal text-charcoal-light">
+            Answers "Can out-of-state buyers purchase here? How does that work?"
+          </span>
+          <textarea
+            name="out_of_state_process"
+            rows={2}
+            defaultValue={dealer.out_of_state_process ?? ""}
+            placeholder="Out-of-state buyers are welcome — we handle the paperwork so it's ready for your home state's registration."
+            className="rounded border-2 border-charcoal/20 px-3 py-2.5 text-base font-normal"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1 text-sm font-semibold">
+          What to bring on purchase day
+          <span className="text-xs font-normal text-charcoal-light">
+            Answers "What do I need to bring? (docs, payment, insurance)"
+          </span>
+          <textarea
+            name="what_to_bring"
+            rows={2}
+            defaultValue={dealer.what_to_bring ?? ""}
+            placeholder="A valid ID, your method of payment, and proof of insurance if you're financing."
+            className="rounded border-2 border-charcoal/20 px-3 py-2.5 text-base font-normal"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1 text-sm font-semibold">
+          Paperwork you handle
+          <span className="text-xs font-normal text-charcoal-light">
+            Answers "Do you handle title/registration paperwork?"
+          </span>
+          <textarea
+            name="paperwork_handled"
+            rows={2}
+            defaultValue={dealer.paperwork_handled ?? ""}
+            placeholder="We handle title and registration paperwork at the time of sale."
+            className="rounded border-2 border-charcoal/20 px-3 py-2.5 text-base font-normal"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1 text-sm font-semibold">
           Discovery questions worth asking every buyer
           <textarea
             name="discovery_notes"
@@ -166,6 +222,23 @@ export default async function AdminSettingsPage({
           <span className="text-xs font-normal text-charcoal-light">
             The moment a chat conversation looks like a real buyer, you get an
             email here.
+          </span>
+        </label>
+
+        <label className="flex items-start gap-2 text-sm font-semibold">
+          <input
+            type="checkbox"
+            name="is_demo"
+            defaultChecked={dealer.is_demo}
+            className="mt-1"
+          />
+          <span>
+            This is the WendHart demo site
+            <span className="block text-xs font-normal text-charcoal-light">
+              When on, the assistant also recognizes visitors who seem to be
+              a dealer evaluating the product (not a buyer) and pitches Reid
+              directly. Leave this off for real dealer accounts.
+            </span>
           </span>
         </label>
 

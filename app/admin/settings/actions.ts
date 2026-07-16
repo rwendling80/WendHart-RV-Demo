@@ -23,7 +23,12 @@ export async function updateChatbotSettings(formData: FormData) {
       warranty_type: warrantyType === "warranty" ? "warranty" : "as_is",
       warranty_details: String(formData.get("warranty_details") || "") || null,
       discovery_notes: String(formData.get("discovery_notes") || "") || null,
+      financing_process: String(formData.get("financing_process") || "") || null,
+      out_of_state_process: String(formData.get("out_of_state_process") || "") || null,
+      what_to_bring: String(formData.get("what_to_bring") || "") || null,
+      paperwork_handled: String(formData.get("paperwork_handled") || "") || null,
       notification_email: String(formData.get("notification_email") || "") || null,
+      is_demo: formData.get("is_demo") === "on",
     })
     .eq("id", dealerId);
 

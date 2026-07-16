@@ -23,11 +23,15 @@ export type Dealer = {
   warranty_type: "as_is" | "warranty";
   warranty_details: string | null;
   discovery_notes: string | null;
+  financing_process: string | null;
+  out_of_state_process: string | null;
+  what_to_bring: string | null;
+  paperwork_handled: string | null;
   is_demo: boolean;
 };
 
 const PUBLIC_DEALER_COLUMNS =
-  "id, slug, domain, name, tagline, phone, address, hours, owner_name, years_in_business, vehicle_type, hold_policy, trade_policy, delivery_policy, warranty_type, warranty_details, discovery_notes, is_demo";
+  "id, slug, domain, name, tagline, phone, address, hours, owner_name, years_in_business, vehicle_type, hold_policy, trade_policy, delivery_policy, warranty_type, warranty_details, discovery_notes, financing_process, out_of_state_process, what_to_bring, paperwork_handled, is_demo";
 
 export const DEALER_ID_HEADER = "x-dealer-id";
 export const DEALER_SLUG_HEADER = "x-dealer-slug";
